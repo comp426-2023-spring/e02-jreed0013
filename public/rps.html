@@ -6,8 +6,6 @@
     </head>
     <body>
         <!-- Navigation Tools -->
-
-
         <nav>
             <button type="button" onclick="toHome()">Home</button>
             <button type="button" onclick="toRPS()">Rock Paper Scissors</button>
@@ -26,14 +24,25 @@
             function toRPSLS() {
                 window.location = "./rpsls.html";
             }
+
         </script>
 
-        <!-- Homepage -->
-        <div id="home" class="active">
-            <h1>Play a game from the above choices:</h1>
-            <p>Click the buttons above to play Rock Paper Scissors, or Rock Paper Scissors Lizard Spock.</p>
-        </div> 
+        <button type="button" onclick="logIn()">LOGIN</button>
+
+        <div id="rps" class="inactive">
+            <h1>Play Rock Paper Scissors:</h1>
+            <!-- A "coin" button that creates an event for the flipCoin() function in main.js. -->
+            <div id="rpsOpponentButton">
+                <label for="yes_no_radio1">Play against an opponent?</label>
+                <p>
+                <input type="radio" name="yes_no1" checked>Yes</input>
+                </p>
+                <p>
+                <input type="radio" name="yes_no1">No</input>
+                </p>
+                </div>
+
+            <button id="rpsplay">Flip it!</button>
 
     </body>
-    
 </html>

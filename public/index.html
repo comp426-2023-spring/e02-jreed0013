@@ -5,35 +5,257 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <!-- Navigation Tools -->
+            <h1>Play a Game!</h1>
+            <!-- A "coin" button that creates an event for the flipCoin() function in main.js. -->
+            <div id="gameSelectorButton">
+                <h2 for="gameSelector">Choose Game:</h2>
+                <p>
+                  <input type="radio" name="gameSelector" value="rpsChosen" checked onclick="showButton('rpsOpponentButton');hideButton('rpslsOpponentButton');hideButton('rpsChoicesButton');hideButton('rpslsChoicesButton');hideButton('playButton');changeLabel('resultText', '');hideButton('resultHeader')">Rock, Paper, Scissors</input>
+                </p>
+                <p>
+                  <input type="radio" name="gameSelector" value="rpslsChosen" onclick="showButton('rpslsOpponentButton');hideButton('rpsOpponentButton');hideButton('rpsChoicesButton');hideButton('rpslsChoicesButton');hideButton('playButton');changeLabel('resultText', '');hideButton('resultHeader')">Rock, Paper, Scissors, Lizard, Spock</input>
+                </p>
+        </div>
+         <!-- RPS Opponent Button  -->       
+        <div id="rpsOpponentButton" style="display: none">
+            <h2 for="yes_no_radio1">Play against an opponent?</h2>
+            <p>
+              <input type="radio" name="rpsOpponentChoice" value="yes" checked onclick="showButton('rpsChoicesButton');showButton('playButton');changeLabel('resultText', '');showButton('resultHeader')">Yes</input>
+            </p>
+            <p>
+              <input type="radio" name="rpsOpponentChoice" value="no" onclick="hideButton('rpsChoicesButton');showButton('playButton');changeLabel('resultText', '');showButton('resultHeader')">No</input>
+            </p>
+        </div>
+
+         <!-- RPSLS Opponent Button  -->       
+        <div id="rpslsOpponentButton" style="display: none">
+            <h2 for="yes_no_radio1">Play against an opponent?</h2>
+            <p>
+              <input type="radio" name="rpslsOpponentChoice" value="yes" checked onclick="showButton('rpslsChoicesButton');showButton('playButton');changeLabel('resultText', '');showButton('resultHeader')">Yes</input>
+            </p>
+            <p>
+              <input type="radio" name="rpslsOpponentChoice" value="no" onclick="hideButton('rpslsChoicesButton');showButton('playButton');changeLabel('resultText', '');showButton('resultHeader')">No</input>
+            </p>
+        </div>
+
+         <!-- RPS Choices Button  -->       
+        <div id="rpsChoicesButton"  style="display: none;">
+            <h2 for="rpsChoice">Choose your move:</h2>
+            <p>
+              <input type="radio" name="rpsChoice" value="rock" active>Rock</input>
+            </p>
+            <p>
+              <input type="radio" name="rpsChoice" value="paper">Paper</input>
+            </p>
+            <p>
+              <input type="radio" name="rpsChoice" value="scissors">Scissors</input>
+            </p>
+          </div>
+
+         <!-- RPSLS Choices Button  -->                
+        <div id="rpslsChoicesButton"  style="display: none;">
+            <h2 for="rpslsChoice">Choose your move:</h2>
+            <p>
+              <input type="radio" name="rpslsChoice" value="rock" active>Rock</input>
+            </p>
+            <p>
+              <input type="radio" name="rpslsChoice" value="paper">Paper</input>
+            </p>
+            <p>
+              <input type="radio" name="rpslsChoice" value="scissors">Scissors</input>
+            </p>
+            <p>
+              <input type="radio" name="rpslsChoice" value="lizard">Lizard</input>
+            </p>
+            <p>
+              <input type="radio" name="rpslsChoice" value="spock">Spock</input>
+            </p>
+          </div>
 
 
-        <nav>
-            <button type="button" onclick="toHome()">Home</button>
-            <button type="button" onclick="toRPS()">Rock Paper Scissors</button>
-            <button type="button" onclick="toRPSLS()">Rock Paper Scissors Lizard Spock</button>
-        </nav>
+          <!-- Random Draw RPS Button-->
+          <div id="playButton" style="display: none;">
+            <button type="button" onclick="playGameButton()">Play Game</button>
+            <button type="button" onclick="resetPage()">Reset Page</button>
+          </div>
 
-        <script>
-            function toHome() {
-                window.location = "./index.html";
+          <div id="resultDiv">
+            <h2 id = "resultHeader" style="display: none;">Result: </h2>
+            <label id = "resultText">
+                <br>
+            </label>
+            <br>
+          </div>
+
+          <div id="showRulesID" >
+            <br>
+            <button type="button" onclick="showButton('rulesID')">Show Rules</button>
+            <button type="button" onclick="hideButton('rulesID')">Hide Rules</button>
+            <label id = "rulesID" style="display: none;">
+                <br>
+                Rules for Rock Paper Scissors:<br>
+                - Scissors CUTS Paper<br>
+                - Paper COVERS Rock<br>
+                - Rock CRUSHES Scissors<br>
+                <br>
+                Rules for the Lizard-Spock Expansion of Rock Paper Scissors:<br>
+                - Scissors CUTS Paper<br>
+                - Paper COVERS Rock<br>
+                - Rock SMOOSHES Lizard<br>
+                - Lizard POISONS Spock<br>
+                - Spock SMASHES Scissors<br>
+                - Scissors DECAPITATES Lizard<br>
+                - Lizard EATS Paper<br>
+                - Paper DISPROVES Spock<br>
+                - Spock VAPORIZES Rock<br>
+                - Rock CRUSHES Scissors
+            </label>
+          </div>
+
+
+        <!-- helper functions -->
+        <script>            
+            function showButton(button) {
+                document.getElementById(button).style.display = "block";
+            }
+            function hideButton(button) {
+              document.getElementById(button).style.display = "none";
+            }
+            function getRadioValue(name) {
+                var radio = document.querySelector(`input[name=${name}]:checked`);
+                return radio.value;
+            }
+            function playGameButton() {
+                var gameSelector = getRadioValue("gameSelector");
+                if (gameSelector === "rpsChosen") {
+                    var opponentChoice = getRadioValue("rpsOpponentChoice")
+                    if (opponentChoice === "yes") {
+                        // CONTENT FOR RPS VS OPPONENT
+                        const value = getRadioValue("rpsChoice");
+                        const result = rps(value);
+                        document.getElementById("resultText").innerHTML = `Player chose ${result.player}, Opponent chose ${result.opponent}, Result is ${result.result}.`;
+                    } else {
+                        // CONTENT FOR RPS WITH RANDOM DRAW
+                        const rpsChoices = ["rock", "paper", "scissors"]
+                        const computerChoice = rpsChoices[Math.floor(Math.random() * rpsChoices.length)];
+                        const result = rps(computerChoice);
+                        document.getElementById("resultText").innerHTML = `Player chose ${result.player}, Opponent chose ${result.opponent}, Result is ${result.result}.`;
+                    }
+                } else {
+                    var opponentChoice = getRadioValue("rpslsOpponentChoice")
+                    if (opponentChoice === "yes") {
+                        // CONTENT FOR RPSLS VS OPPONENT
+                        const value = getRadioValue("rpslsChoice");
+                        const result = rpsls(value);
+                        document.getElementById("resultText").innerHTML = `Player chose ${result.player}, Opponent chose ${result.opponent}, Result is ${result.result}.`;
+                    
+                    } else {
+                        // CONTENT FOR RPSLS WITH RANDOM DRAW
+                        const rpslsChoices = ["rock", "paper", "scissors", "lizard", "spock"]
+                        const computerChoice = rpslsChoices[Math.floor(Math.random() * rpslsChoices.length)];
+                        const result = rpsls(computerChoice);
+                        document.getElementById("resultText").innerHTML = `Player chose ${result.player}, Opponent chose ${result.opponent}, Result is ${result.result}.`;
+                    }
+                }
+            }
+            function changeLabel(elementID, textReplacement) {
+                document.getElementById(elementID).innerHTML = textReplacement;
             }
 
-            function toRPS() {
-                window.location = "./rps.html";
+            function rps(choice) {
+                const rpsChoices = ["rock", "paper", "scissors"]
+                // generating computer choice
+                const computerChoice = rpsChoices[Math.floor(Math.random() * rpsChoices.length)];
+            
+                // tie case
+                if (choice == computerChoice) { 
+                    return { 
+                        "player": choice,
+                        "opponent": computerChoice,
+                        "result": "tie"
+                    };
+                };
+            
+                // win and lose case
+                if ((choice == "rock" && computerChoice == "scissors") ||
+                    (choice == "scissors" && computerChoice == "paper") ||
+                    (choice == "paper" && computerChoice == "rock")) {
+                    return {
+                        "player": choice,
+                        "opponent": computerChoice,
+                        "result": "win"
+                    };
+                } else {
+                    return {
+                        "player": choice,
+                        "opponent": computerChoice,
+                        "result": "lose"
+                    };
+                }
             }
 
-            function toRPSLS() {
-                window.location = "./rpsls.html";
+            function rpsls(playerChoice) {    
+                const rpslsChoices = ["rock", "paper", "scissors", "lizard", "spock"]
+                // generating computer choice
+                const computerChoice = rpslsChoices[Math.floor(Math.random() * rpslsChoices.length)];
+            
+                // tie case
+                if (playerChoice == computerChoice) {
+                    return { 
+                        "player": playerChoice,
+                        "opponent": computerChoice,
+                        "result": "tie"
+                    };
+                };
+            
+                // win and lose case
+                if ((playerChoice == "rock" && (computerChoice == "scissors" || computerChoice == "lizard")) ||
+                    (playerChoice == "scissors" && (computerChoice == "paper" || computerChoice == "lizard")) ||
+                    (playerChoice == "paper" && (computerChoice == "rock" || computerChoice == "spock")) ||
+                    (playerChoice == "lizard" && (computerChoice == "paper" || computerChoice == "spock")) ||
+                    (playerChoice == "spock" && (computerChoice == "rock" || computerChoice == "scissors"))) {
+                    return {
+                        "player": playerChoice,
+                        "opponent": computerChoice,
+                        "result": "win"
+                    };
+                } else {
+                    return {
+                        "player": playerChoice,
+                        "opponent": computerChoice,
+                        "result": "lose"
+                    };
+                }
             }
-        </script>
 
-        <!-- Homepage -->
-        <div id="home" class="active">
-            <h1>Play a game from the above choices:</h1>
-            <p>Click the buttons above to play Rock Paper Scissors, or Rock Paper Scissors Lizard Spock.</p>
+            function rulesRPS() {
+                return(`Rules for Rock Paper Scissors:
+                - Scissors CUTS Paper
+                - Paper COVERS Rock
+                - Rock CRUSHES Scissors`);
+                return;
+            }
+            
+            
+            function rulesRPSLS() {
+                return(`Rules for the Lizard-Spock Expansion of Rock Paper Scissors:
+                - Scissors CUTS Paper
+                - Paper COVERS Rock
+                - Rock SMOOSHES Lizard
+                - Lizard POISONS Spock
+                - Spock SMASHES Scissors
+                - Scissors DECAPITATES Lizard
+                - Lizard EATS Paper
+                - Paper DISPROVES Spock
+                - Spock VAPORIZES Rock
+                - Rock CRUSHES Scissors`);
+                return;
+            }
+
+            function resetPage() {
+                window.location.reload();
+            }
+          </script>
         </div> 
-
     </body>
-    
 </html>

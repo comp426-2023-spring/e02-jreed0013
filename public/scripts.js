@@ -2,51 +2,55 @@
 // check out the coin-server example from a previous COMP 426 semester.
 // https://github.com/jdmar3/coinserver
 
-// Navigation functions
-function homeNav() {
-    document.getElementById("homenav").className = "active";
-    document.getElementById("home").className = "active";
-    document.getElementById("rpsnav").className = "";
-    document.getElementById("rps").className = "inactive";
-    document.getElementById("rpslsnav").className = "";
-    document.getElementById("rpsls").className = "inactive";
-  }
-
-
-  function rpsnav() {
-    document.getElementById("homenav").className = "";
-    document.getElementById("home").className = "inactive";
-    document.getElementById("rpsnav").className = "active";
-    document.getElementById("rps").className = "active";
-    document.getElementById("rpslsnav").className = "";
-    document.getElementById("rpsls").className = "inactive";
-  }
-
-  function rpslsnav() {
-    document.getElementById("homenav").className = "";
-    document.getElementById("home").className = "inactive";
-    document.getElementById("rpsnav").className = "";
-    document.getElementById("rps").className = "inactive";
-    document.getElementById("rpslsnav").className = "active";
-    document.getElementById("rpsls").className = "active";
-  }
-
-
-// Setting up arrays for the games
-const rpsChoices = ["rock", "paper", "scissors"]
-const rpslsChoices = ["rock", "paper", "scissors", "lizard", "spock"]
-
-
-// functions to play the games
-export function rps(choice) {
-    // checking arguments
-    if (!rpsChoices.includes(choice)) {
-        console.error(`${choice} is out of range.`);
-        rulesRPS();
-        helpRPS();
-        return;
+function showButton(button) {
+    document.getElementById(button).style.display = "block";
+}
+function hideButton(button) {
+  document.getElementById(button).style.display = "none";
+}
+function getRadioValue(name) {
+    var radio = document.querySelector(`input[name=${name}]:checked`);
+    return radio.value;
+}
+function playGameButton() {
+    var gameSelector = getRadioValue("gameSelector");
+    if (gameSelector === "rpsChosen") {
+        var opponentChoice = getRadioValue("rpsOpponentChoice")
+        if (opponentChoice === "yes") {
+            // CONTENT FOR RPS VS OPPONENT
+            const value = getRadioValue("rpsChoice");
+            const result = rps(value);
+            document.getElementById("resultText").innerHTML = `Player chose ${result.player}, Opponent chose ${result.opponent}, Result is ${result.result}.`;
+        } else {
+            // CONTENT FOR RPS WITH RANDOM DRAW
+            const rpsChoices = ["rock", "paper", "scissors"]
+            const computerChoice = rpsChoices[Math.floor(Math.random() * rpsChoices.length)];
+            const result = rps(computerChoice);
+            document.getElementById("resultText").innerHTML = `Player chose ${result.player}, Opponent chose ${result.opponent}, Result is ${result.result}.`;
+        }
+    } else {
+        var opponentChoice = getRadioValue("rpslsOpponentChoice")
+        if (opponentChoice === "yes") {
+            // CONTENT FOR RPSLS VS OPPONENT
+            const value = getRadioValue("rpslsChoice");
+            const result = rpsls(value);
+            document.getElementById("resultText").innerHTML = `Player chose ${result.player}, Opponent chose ${result.opponent}, Result is ${result.result}.`;
+        
+        } else {
+            // CONTENT FOR RPSLS WITH RANDOM DRAW
+            const rpslsChoices = ["rock", "paper", "scissors", "lizard", "spock"]
+            const computerChoice = rpslsChoices[Math.floor(Math.random() * rpslsChoices.length)];
+            const result = rpsls(computerChoice);
+            document.getElementById("resultText").innerHTML = `Player chose ${result.player}, Opponent chose ${result.opponent}, Result is ${result.result}.`;
+        }
     }
+}
+function changeLabel(elementID, textReplacement) {
+    document.getElementById(elementID).innerHTML = textReplacement;
+}
 
+function rps(choice) {
+    const rpsChoices = ["rock", "paper", "scissors"]
     // generating computer choice
     const computerChoice = rpsChoices[Math.floor(Math.random() * rpsChoices.length)];
 
@@ -77,17 +81,8 @@ export function rps(choice) {
     }
 }
 
-
-
-export function rpsls(playerChoice) {
-    // checking arguments
-    if (!rpslsChoices.includes(playerChoice)) {
-        console.error(`${playerChoice} is out of range.`);
-        rulesRPSLS();
-        helpRPSLS();
-        return;
-    }
-
+function rpsls(playerChoice) {    
+    const rpslsChoices = ["rock", "paper", "scissors", "lizard", "spock"]
     // generating computer choice
     const computerChoice = rpslsChoices[Math.floor(Math.random() * rpslsChoices.length)];
 
@@ -120,43 +115,8 @@ export function rpsls(playerChoice) {
     }
 }
 
-
-// game help functions
-export function helpRPS() {
-    console.log(`Usage: node-rps [SHOT]
-    Play Rock Paper Scissors (RPS)
-    
-      -h, --help      display this help message and exit
-      -r, --rules     display the rules and exit
-    
-    Examples:
-      node-rps        Return JSON with single player RPS result.
-                      e.g. {"player":"rock"}
-      node-rps rock   Return JSON with results for RPS played against a simulated opponent.
-                      e.g {"player":"rock","opponent":"scissors","result":"win"}`);
-    return;
-}
-
-
-export function helpRPSLS() {
-    console.log(`Usage: node-rpsls [SHOT]
-    Play the Lizard-Spock Expansion of Rock Paper Scissors (RPSLS)!
-    
-      -h, --help        display this help message and exit
-      -r, --rules       display the rules and exit
-    
-    Examples:
-      node-rpsls        Return JSON with single player RPSLS result.
-                        e.g. {"player":"rock"}
-      node-rpsls rock   Return JSON with results for RPSLS played against a simulated opponent.
-                        e.g {"player":"rock","opponent":"Spock","result":"lose"}`);
-    return;
-}
-
-
-// game rules functions
-export function rulesRPS() {
-    console.log(`Rules for Rock Paper Scissors:
+function rulesRPS() {
+    return(`Rules for Rock Paper Scissors:
     - Scissors CUTS Paper
     - Paper COVERS Rock
     - Rock CRUSHES Scissors`);
@@ -164,8 +124,8 @@ export function rulesRPS() {
 }
 
 
-export function rulesRPSLS() {
-    console.log(`Rules for the Lizard-Spock Expansion of Rock Paper Scissors:
+function rulesRPSLS() {
+    return(`Rules for the Lizard-Spock Expansion of Rock Paper Scissors:
     - Scissors CUTS Paper
     - Paper COVERS Rock
     - Rock SMOOSHES Lizard
@@ -179,35 +139,6 @@ export function rulesRPSLS() {
     return;
 }
 
-
-export function rps(choice) {
-    const rpsChoices = ["rock", "paper", "scissors"]
-    // generating computer choice
-    const computerChoice = rpsChoices[Math.floor(Math.random() * rpsChoices.length)];
-
-    // tie case
-    if (choice == computerChoice) { 
-        return { 
-            "player": choice,
-            "opponent": computerChoice,
-            "result": "tie"
-        };
-    };
-
-    // win and lose case
-    if ((choice == "rock" && computerChoice == "scissors") ||
-        (choice == "scissors" && computerChoice == "paper") ||
-        (choice == "paper" && computerChoice == "rock")) {
-        return {
-            "player": choice,
-            "opponent": computerChoice,
-            "result": "win"
-        };
-    } else {
-        return {
-            "player": choice,
-            "opponent": computerChoice,
-            "result": "lose"
-        };
-    }
+function resetPage() {
+    window.location.reload();
 }

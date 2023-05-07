@@ -128,78 +128,78 @@ app.get("/app/rpsls/", (req,res) => {
 
 // playing rps endpoint
 app.get("/app/rps/play/", (req,res) => {
-    var shot = req.query.shot;
     try {
-        var result = JSON.stringify(rps(shot));
+        const choice = req.query.choice;
+        const result = JSON.stringify(rps(choice));
+        res.status(200)
+        .setHeader('Content-Type', 'application/json')
+        .send(result);
     } catch{
-        result = `${shot} is out of range.`;
+        res.status(400).send(`${choice} is out of range.`);
     }
-    res.status(200)
-    .setHeader('Content-Type', 'application/json')
-    .send(result);
 });
 
 // playing rpsls endpoint
 app.get("/app/rpsls/play/", (req,res) => {
-    var shot = req.query.shot;
     try {
-        var result = JSON.stringify(rpsls(shot));
+        const choice = req.query.choice;
+        const result = JSON.stringify(rpsls(choice));
+        res.status(200)
+        .setHeader('Content-Type', 'application/json')
+        .send(result);
     } catch{
-        result = `${shot} is out of range.`;
+        res.status(400).send(`${choice} is out of range.`);
     }
-    res.status(200)
-    .setHeader('Content-Type', 'application/json')
-    .send(result);
 });
 
 // rps play post
 app.post("/app/rps/play/", (req,res) => {
-    var shot = req.body.shot;
     try {
-        var result = JSON.stringify(rps(shot));
+        const choice = req.body.choice;
+        const result = JSON.stringify(rps(choice));
+        res.status(200)
+        .setHeader('Content-Type', 'text/plain')
+        .send(result);
     } catch{
-        result = `${shot} is out of range.`;
+        res.status(400).send(`${choice} is out of range.`);
     }
-    res.status(200)
-    .setHeader('Content-Type', 'text/plain')
-    .send(result);
 });
 
 // rpsls play post
 app.post("/app/rpsls/play/", (req,res) => {
-    var shot = req.body.shot;
     try {
-        var result = JSON.stringify(rpsls(shot));
+        const choice = req.body.choice;
+        const result = JSON.stringify(rpsls(choice));
+        res.status(200)
+        .setHeader('Content-Type', 'application/json')
+        .send(result);
     } catch{
-        result = `${shot} is out of range.`;
+        res.status(400).send(`${choice} is out of range.`);
     }
-    res.status(200)
-    .setHeader('Content-Type', 'application/json')
-    .send(result);
 });
 
-app.get("/app/rps/play/:shot", (req,res) => {
-    var shot = req.params.shot;
+app.get("/app/rps/play/:choice", (req,res) => {
     try {
-        var result = JSON.stringify(rps(shot));
+        const choice = req.params.choice;
+        const result = JSON.stringify(rps(choice));
+        res.status(200)
+        .setHeader('Content-Type', 'application/json')
+        .send(result);
     } catch{
-        result = `${shot} is out of range.`;
+        res.status(400).send(`${choice} is out of range.`);
     }
-    res.status(200)
-    .setHeader('Content-Type', 'application/json')
-    .send(result);
 });
 
-app.get("/app/rpsls/play/:shot", (req,res) => {
-    var shot = req.params.shot;
+app.get("/app/rpsls/play/:choice", (req,res) => {
     try {
-        var result = JSON.stringify(rpsls(shot));
+        const choice = req.params.choice;
+        const result = JSON.stringify(rpsls(choice));
+        res.status(200)
+        .setHeader('Content-Type', 'application/json')
+        .send(result);
     } catch{
-        result = `${shot} is out of range.`;
+        res.status(400).send(`${choice} is out of range.`);
     }
-    res.status(200)
-    .setHeader('Content-Type', 'application/json')
-    .send(result);
 });
 
 // catch 404 error

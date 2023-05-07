@@ -102,3 +102,108 @@ process.on('SIGINT', () => {
         }    
     })
 })
+
+import { rps, rpsls } from "./lib/rpsls.js";
+
+// endpoint at /app/ returns 200 OK
+app.get("/app/", (req,res) => {
+    res.status(200).send({"message":"200 OK"});
+});
+
+// endpoint at /app/rps/ returns {"player":"(rock|paper|scissors)"}
+app.get("/app/rps/", (req,res) => {
+    var result = JSON.stringify(rps())
+    res.status(200)
+    .setHeader('Content-type', 'application/json')
+    .send(result)
+});
+
+// '/app/rpsls/' accepts the correct request bodies
+app.get("/app/rpsls/", (req,res) => {
+    var result = JSON.stringify(rpsls())
+    res.status(200)
+    .setHeader('Content-type', 'application/json')
+    .send(result)
+});
+
+// playing rps endpoint
+app.get("/app/rps/play/", (req,res) => {
+    var shot = req.query.shot;
+    try {
+        var result = JSON.stringify(rps(shot));
+    } catch{
+        result = `${shot} is out of range.`;
+    }
+    res.status(200)
+    .setHeader('Content-Type', 'application/json')
+    .send(result);
+});
+
+// playing rpsls endpoint
+app.get("/app/rpsls/play/", (req,res) => {
+    var shot = req.query.shot;
+    try {
+        var result = JSON.stringify(rpsls(shot));
+    } catch{
+        result = `${shot} is out of range.`;
+    }
+    res.status(200)
+    .setHeader('Content-Type', 'application/json')
+    .send(result);
+});
+
+// rps play post
+app.post("/app/rps/play/", (req,res) => {
+    var shot = req.body.shot;
+    try {
+        var result = JSON.stringify(rps(shot));
+    } catch{
+        result = `${shot} is out of range.`;
+    }
+    res.status(200)
+    .setHeader('Content-Type', 'text/plain')
+    .send(result);
+});
+
+// rpsls play post
+app.post("/app/rpsls/play/", (req,res) => {
+    var shot = req.body.shot;
+    try {
+        var result = JSON.stringify(rpsls(shot));
+    } catch{
+        result = `${shot} is out of range.`;
+    }
+    res.status(200)
+    .setHeader('Content-Type', 'application/json')
+    .send(result);
+});
+
+app.get("/app/rps/play/:shot", (req,res) => {
+    var shot = req.params.shot;
+    try {
+        var result = JSON.stringify(rps(shot));
+    } catch{
+        result = `${shot} is out of range.`;
+    }
+    res.status(200)
+    .setHeader('Content-Type', 'application/json')
+    .send(result);
+});
+
+app.get("/app/rpsls/play/:shot", (req,res) => {
+    var shot = req.params.shot;
+    try {
+        var result = JSON.stringify(rpsls(shot));
+    } catch{
+        result = `${shot} is out of range.`;
+    }
+    res.status(200)
+    .setHeader('Content-Type', 'application/json')
+    .send(result);
+});
+
+// catch 404 error
+app.get("app/*", (req,res) => {
+    res.status(404)
+    .send('404: Not Found!');
+});

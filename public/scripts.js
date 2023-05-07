@@ -12,20 +12,24 @@ function getRadioValue(name) {
     var radio = document.querySelector(`input[name=${name}]:checked`);
     return radio.value;
 }
-function playGameButton() {
+async function playGameButton() {
     var gameSelector = getRadioValue("gameSelector");
     if (gameSelector === "rpsChosen") {
         var opponentChoice = getRadioValue("rpsOpponentChoice")
         if (opponentChoice === "yes") {
             // CONTENT FOR RPS VS OPPONENT
             const value = getRadioValue("rpsChoice");
-            const result = rps(value);
+            const url = '/app/rps/play/' + value;
+            var response = await fetch(url);
+            var result = await response.json();
             document.getElementById("resultText").innerHTML = `Player chose ${result.player}, Opponent chose ${result.opponent}, Result is ${result.result}.`;
         } else {
             // CONTENT FOR RPS WITH RANDOM DRAW
             const rpsChoices = ["rock", "paper", "scissors"]
             const computerChoice = rpsChoices[Math.floor(Math.random() * rpsChoices.length)];
-            const result = rps(computerChoice);
+            const url = '/app/rps/play/' + computerChoice;
+            var response = await fetch(url);
+            var result = await response.json();
             document.getElementById("resultText").innerHTML = `Player chose ${result.player}, Opponent chose ${result.opponent}, Result is ${result.result}.`;
         }
     } else {
@@ -33,14 +37,18 @@ function playGameButton() {
         if (opponentChoice === "yes") {
             // CONTENT FOR RPSLS VS OPPONENT
             const value = getRadioValue("rpslsChoice");
-            const result = rpsls(value);
+            const url = '/app/rpsls/play/' + value;
+            var response = await fetch(url);
+            var result = await response.json();
             document.getElementById("resultText").innerHTML = `Player chose ${result.player}, Opponent chose ${result.opponent}, Result is ${result.result}.`;
         
         } else {
             // CONTENT FOR RPSLS WITH RANDOM DRAW
             const rpslsChoices = ["rock", "paper", "scissors", "lizard", "spock"]
             const computerChoice = rpslsChoices[Math.floor(Math.random() * rpslsChoices.length)];
-            const result = rpsls(computerChoice);
+            const url = '/app/rpsls/play/' + computerChoice;
+            var response = await fetch(url);
+            var result = await response.json();
             document.getElementById("resultText").innerHTML = `Player chose ${result.player}, Opponent chose ${result.opponent}, Result is ${result.result}.`;
         }
     }
